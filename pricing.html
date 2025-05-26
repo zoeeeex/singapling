@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Singapling Pricing</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/3135/3135715.png">
+</head>
+<body>
+  <header style="position:relative;text-align:center;padding-top:1.5rem;">
+    <span class="badge" style="position:absolute;left:2rem;top:1.2rem;">Beta</span>
+    <img src="images/SingaplingV2-2.png" alt="Singapling Logo" style="width:140px;height:110px;border-radius:1.5rem;box-shadow:0 2px 12px #7f5af033;object-fit:cover;vertical-align:middle;display:block;margin:0 auto 0.5rem auto;">
+    <nav style="margin-top:1rem;">
+      <a href="index.html">Home</a>
+      <a href="faq.html">FAQ</a>
+      <a href="pricing.html">Pricing</a>
+    </nav>
+    <p style="margin-top:0.5rem;">Singapore's freshest, boldest telco. <span style="color:#ff8906">#StayConnected</span></p>
+  </header>
+  <main>
+    <h2>Our Plans & Pricing</h2>
+    <p>Choose the plan that fits your vibe. All prices in SGD/month unless stated.</p>
+    <table class="pricing-table">
+      <thead>
+        <tr>
+          <th>Plan</th>
+          <th>Price</th>
+          <th>Data</th>
+          <th>Type</th>
+          <th>Speed/Details</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Singa Basic Plan</td><td>$25</td><td>25GB</td><td>Mobile</td><td>4G</td></tr>
+        <tr><td>Singa Plus Plan</td><td>$35</td><td>50GB</td><td>Mobile</td><td>4G</td></tr>
+        <tr><td>Singa Premium Plan</td><td>$55</td><td>75GB</td><td>Mobile</td><td>5G</td></tr>
+        <tr><td>Singa Family Plan</td><td>$80</td><td>150GB</td><td>Mobile</td><td>5G</td></tr>
+        <tr><td>Fiber Home 500</td><td>$39.90</td><td>Unlimited</td><td>Broadband</td><td>Up to 500 Mbps</td></tr>
+        <tr><td>Fiber Home 1G</td><td>$49.90</td><td>Unlimited</td><td>Broadband</td><td>Up to 1 Gbps</td></tr>
+        <tr><td>Fiber Home 1G Plus</td><td>$59.90</td><td>Unlimited</td><td>Broadband</td><td>Up to 1 Gbps + Mesh Wi-Fi</td></tr>
+        <tr><td>Wireless Home Basic</td><td>$35</td><td>Unlimited</td><td>Broadband</td><td>Up to 50 Mbps</td></tr>
+        <tr><td>Roaming Zone A - 2GB (3 days)</td><td>$15</td><td>5GB</td><td>Mobile</td><td>4G</td></tr>
+        <tr><td>Roaming Zone A - 5GB (7 days)</td><td>$30</td><td>8GB</td><td>Mobile</td><td>4G</td></tr>
+        <tr><td>Roaming Zone B - 1GB (3 days)</td><td>$25</td><td>5GB</td><td>Mobile</td><td>4G</td></tr>
+        <tr><td>Roaming Zone B - 3GB (7 days)</td><td>$45</td><td>8GB</td><td>Mobile</td><td>4G</td></tr>
+        <tr><td>Bundle: Fiber Home 1G + Singa Plus + TV Basic</td><td>$120</td><td>Unlimited</td><td>Mobile</td><td>4G</td></tr>
+        <tr><td>TV Basic</td><td>$19.90</td><td>Unlimited</td><td>TV</td><td>N/A</td></tr>
+        <tr><td>Bundle: Fiber Home 1G + Singa Plus + TV Basic</td><td>$89.90</td><td>Unlimited</td><td>Bundle</td><td>1 Gbps broadband, 4G/5G mobile, TV</td></tr>
+      </tbody>
+    </table>
+    <section id="chatbot-section" style="margin-top:2.5rem;max-width:500px;margin-left:auto;margin-right:auto;background:#f9fafc;padding:1.5rem 1rem;border-radius:1.2rem;box-shadow:0 2px 12px #7f5af022;">
+      <h3 style="margin-bottom:1rem;display:flex;align-items:center;gap:0.7rem;">
+        <img src="images/botlah.png" alt="Botlah the Bot" class="chatbot-avatar"> Ask Singapling AI
+      </h3>
+      <div id="chat-messages" style="min-height:60px;margin-bottom:1rem;"></div>
+      <form id="chat-form" style="display:flex;gap:0.5rem;">
+        <input id="chat-input" type="text" placeholder="Type your question..." style="flex:1;padding:0.5rem 1rem;border-radius:1rem;border:1px solid #e0e7ff;outline:none;" required />
+        <button type="submit" style="background:#7f5af0;color:#fff;border:none;border-radius:1rem;padding:0.5rem 1.2rem;font-weight:700;cursor:pointer;">Send</button>
+      </form>
+      <div id="chat-error" style="color:#ff3333;font-size:0.95rem;margin-top:0.5rem;"></div>
+    </section>
+    <script>
+      async function query(data) {
+        // TODO: Replace YOUR_SPACE and YOUR_CHATFLOW_ID with your own values below
+        const response = await fetch(
+          "https://YOUR_SPACE.hf.space/api/v1/prediction/YOUR_CHATFLOW_ID",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+          }
+        );
+        const result = await response.json();
+        return result;
+      }
+      function renderMarkdown(md) {
+        // Basic markdown to HTML conversion for chat (bold, italics, code, line breaks, tables)
+        let html = md
+          .replace(/\*\*(.*?)\*\*/g, '<b>$1</b>') // bold
+          .replace(/\*(.*?)\*/g, '<i>$1</i>') // italics
+          .replace(/`([^`]+)`/g, '<code>$1</code>') // inline code
+          .replace(/\n/g, '<br>'); // line breaks
+        // Table: convert markdown table to HTML table
+        if (/^\s*\|.*\|/m.test(md)) {
+          html = html.replace(/((?:^\s*\|.*\|\s*\n?)+)/gm, function(table) {
+            const rows = table.trim().split(/\n/).filter(Boolean);
+            if (rows.length < 2) return table; // not a table
+            const header = rows[0].replace(/\|/g, ' ').trim().split(/\s{2,}/);
+            const aligns = rows[1];
+            const bodyRows = rows.slice(2).map(r => r.replace(/\|/g, ' ').trim().split(/\s{2,}/));
+            let htmlTable = '<table class="chat-table"><thead><tr>';
+            header.forEach(h => htmlTable += `<th>${h}</th>`);
+            htmlTable += '</tr></thead><tbody>';
+            bodyRows.forEach(row => {
+              htmlTable += '<tr>';
+              row.forEach(cell => htmlTable += `<td>${cell}</td>`);
+              htmlTable += '</tr>';
+            });
+            htmlTable += '</tbody></table>';
+            return htmlTable;
+          });
+        }
+        return html;
+      }
+      document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('chat-form');
+        const input = document.getElementById('chat-input');
+        const messages = document.getElementById('chat-messages');
+        const errorDiv = document.getElementById('chat-error');
+        form.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const userMsg = input.value.trim();
+          if (!userMsg) return;
+          messages.innerHTML += `<div class='chat-msg user'><b>You:</b> ${userMsg}</div>`;
+          input.value = '';
+          errorDiv.textContent = '';
+          try {
+            messages.innerHTML += `<div class='chat-msg bot' style='color:#888;'>BotLah is typing...</div>`;
+            const response = await query({"question": userMsg});
+            let botMsg = response.text || JSON.stringify(response);
+            messages.innerHTML = messages.innerHTML.replace('BotLah is typing...','');
+            messages.innerHTML += `<div class='chat-msg bot'><b>BotLah:</b> ${renderMarkdown(botMsg)}</div>`;
+            messages.scrollTop = messages.scrollHeight;
+          } catch (err) {
+            errorDiv.textContent = 'Sorry, there was a problem contacting BotLah.';
+          }
+        });
+      });
+    </script>
+  </main>
+  <footer>
+    &copy; 2025 Singapling. Not a real telco.
+  </footer>
+  <!-- Chatbot embed removed for GitHub Pages compatibility. See README for details. -->
+</body>
+</html>
